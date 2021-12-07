@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      div {
+        width: 100px;
+        height: 100px;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="App">
+      <ul id="ul"></ul>
+      <div id="Target">Loading</div>
+    </main>
+
+    <script>
+      const $Ul = document.querySelector("#ul");
+      const $Target = document.querySelector("#Target");
+
+      let count = 1;
+      addMoreItem();
+      infiniteScroll();
+
+      function addMoreItem() {
+        for (let i = 0; i < 10; i++) {
+          const newItem = document.createElement("div");
+          newItem.textContent = `${count}`;
+          $Ul.appendChild(newItem);
+          count += 1;
+        }
+      }
+
+      function infiniteScroll() {
+        let options = {
+          root: null,
+          rootMargin: "0px",
+          threshold: 1.0,
+        };
+
+        function callback(entries, observer) {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              addMoreItem();
+            }
+          });
+        }
+
+        let observer = new IntersectionObserver(callback, options);
+        observer.observe($Target);
+      }
+    </script>
+  </body>
+</html>
